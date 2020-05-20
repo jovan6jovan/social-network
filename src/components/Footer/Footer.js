@@ -18,9 +18,9 @@ const Footer = () => (
     </p>
     <p className="m-0">
       Copyright &copy; 2020{" "}
-      <a href="/" className="text-muted">
+      <Link to="/" className="text-muted">
         Socializr
-      </a>
+      </Link>
       . All rights reserved.
     </p>
   </footer>
