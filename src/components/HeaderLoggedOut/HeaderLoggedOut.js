@@ -1,20 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
+
+import { SomeContext } from "../../context/SomeContext";
 
 const HeaderLoggedOut = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { setLoggedIn } = useContext(SomeContext);
 
   const handleSubmit = async e => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:8080/login", {
+      const response = await axios.post("/login", {
         username,
         password
       });
 
-      response.data ? console.log(response.data) : console.log("Incorrect username/password");
+      if(response.data) {
+        setLoggedIn(true);
+
+        localStorage.setItem("socializrToken", response.data.token);
+        localStorage.setItem("socializrUsername", response.data.username);
+        localStorage.setItem("socializrAvatar", response.data.avatar);
+      } else {
+        console.log("Incorrect username/password");
+      }
     } catch (err) {
       console.log("There was a problem");
     }

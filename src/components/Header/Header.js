@@ -1,19 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
+import { SomeContext } from "../../context/SomeContext";
 import HeaderLoggedOut from "../HeaderLoggedOut/HeaderLoggedOut";
+import HeaderLoggedIn from "../HeaderLoggedIn/HeaderLoggedIn";
 
-const Header = () => (
-  <header className="header-bar bg-primary mb-3">
-    <div className="container d-flex flex-column flex-md-row align-items-center p-3">
-      <h4 className="my-0 mr-md-auto font-weight-normal">
-        <Link to="/" className="text-white logo">
-          Socializr
-        </Link>
-      </h4>
-      <HeaderLoggedOut />
-    </div>
-  </header>
-);
+const Header = () => {
+  const { loggedIn } = useContext(SomeContext);
+  return (
+    <header className="header-bar bg-primary mb-3">
+      <div className="container d-flex flex-column flex-md-row align-items-center p-3">
+        <h4 className="my-0 mr-md-auto font-weight-normal">
+          <Link to="/" className="text-white logo">
+            Socializr
+          </Link>
+        </h4>
+        {loggedIn ? <HeaderLoggedIn /> : <HeaderLoggedOut />}
+      </div>
+    </header>
+  );
+};
 
 export default Header;
