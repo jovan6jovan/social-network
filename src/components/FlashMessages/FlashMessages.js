@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 
-import { SomeContext } from "../../context/SomeContext";
+import StateContext from "../../context/StateContext";
 
 const FlashMessages = () => {
-  const { flashMessages } = useContext(SomeContext);
+  const { flashMessages } = useContext(StateContext);
 
   return (
     <div className="floating-alerts">

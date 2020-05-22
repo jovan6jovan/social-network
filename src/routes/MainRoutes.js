@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Switch, Route } from "react-router-dom";
 
-import { SomeContext } from "../context/SomeContext";
+import StateContext from "../context/StateContext";
 import HomeGuest from "../components/HomeGuest/HomeGuest";
 import Home from "../components/Home/Home";
 import About from "../components/About/About";
@@ -10,7 +10,7 @@ import CreatePost from "../components/CreatePost/CreatePost";
 import ViewSinglePost from "../components/ViewSinglePost/ViewSinglePost";
 
 const MainRoutes = () => {
-  const { loggedIn } = useContext(SomeContext);
+  const { loggedIn } = useContext(StateContext);
 
   return (
     <Switch>

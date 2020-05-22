@@ -1,20 +1,47 @@
-import React, { useState, createContext } from "react";
+import React, { useReducer, createContext } from "react";
 
-const SomeContext = createContext();
+import StateContext from "./StateContext";
+import DispatchContext from "./DispatchContext";
+
+// const SomeContext = createContext();
 
 const SomeProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(Boolean(localStorage.getItem("socializrToken")));
-  const [flashMessages, setFlashMessages] = useState([]);
+  const initialState = {
+    loggedIn: Boolean(localStorage.getItem("socializrToken")),
+    flashMessages: []
+  };
 
-  const addFlashMessage = msg => setFlashMessages(prev => prev.concat(msg));
+  const someReducer = (state, action) => {
+    switch(action.type) {
+      case "login":
+        return {
+          loggedIn: true,
+          flashMessages: state.flashMessages
+        }
+      case "logout":
+        return {
+          loggedIn: false,
+          flashMessages: state.flashMessages
+        }
+      case "flashMessage":
+        return {
+          loggedIn: state.loggedIn,
+          flashMessages: state.flashMessages.concat(action.value)
+        }
+    }
+  }
+
+  const [state, dispatch] = useReducer(someReducer, initialState);
 
   return (
-    <SomeContext.Provider value={{loggedIn, setLoggedIn, flashMessages, addFlashMessage}}>
-      {children}
-    </SomeContext.Provider>
+    <StateContext.Provider value={state}>
+      <DispatchContext.Provider value={dispatch}>
+        {children}
+      </DispatchContext.Provider>
+    </StateContext.Provider>
   );
 };
 
-const SomeConsumer = SomeContext.Consumer;
+// const SomeConsumer = SomeContext.Consumer;
 
-export { SomeProvider, SomeConsumer, SomeContext };
+export { SomeProvider };

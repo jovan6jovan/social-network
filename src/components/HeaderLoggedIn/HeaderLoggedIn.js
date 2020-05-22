@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
-import { SomeContext } from "../../context/SomeContext";
+import DispatchContext from "../../context/DispatchContext";
 
 const HeaderLoggedIn = () => {
-  const { setLoggedIn } = useContext(SomeContext);
+  const dispatch = useContext(DispatchContext);
   
   const handleLogout = () => {
-    setLoggedIn(false);
+    dispatch({type: "logout"});
 
     localStorage.removeItem("socializrToken");
     localStorage.removeItem("socializrUsername");

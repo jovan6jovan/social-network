@@ -3,12 +3,12 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 
 import Page from "../Page/Page";
-import { SomeContext } from "../../context/SomeContext";
+import DispatchContext from "../../context/DispatchContext";
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-  const { addFlashMessage } = useContext(SomeContext);
+  const dispatch = useContext(DispatchContext);
   let history = useHistory();
 
   const handleSubmit = async e => {
@@ -21,7 +21,7 @@ const CreatePost = () => {
         token: localStorage.getItem("socializrToken")
       });
 
-      addFlashMessage("You successfully created a post.");
+      dispatch({type: "flashMessage", value: "You successfully created a post."});
       history.push(`/post/${response.data}`);
     } catch (err) {
       console.log("There was a problem");
