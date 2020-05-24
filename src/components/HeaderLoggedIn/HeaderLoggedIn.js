@@ -2,17 +2,15 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
 import DispatchContext from "../../context/DispatchContext";
+import StateContext from "../../context/StateContext";
 
 const HeaderLoggedIn = () => {
   const dispatch = useContext(DispatchContext);
-  
-  const handleLogout = () => {
-    dispatch({type: "logout"});
+  const state = useContext(StateContext);
 
-    localStorage.removeItem("socializrToken");
-    localStorage.removeItem("socializrUsername");
-    localStorage.removeItem("socializrAvatar");
-  }
+  const handleLogout = () => {
+    dispatch({ type: "logout" });
+  };
 
   return (
     <div className="flex-row my-3 my-md-0">
@@ -26,14 +24,16 @@ const HeaderLoggedIn = () => {
       <a href="/" className="mr-2">
         <img
           className="small-header-avatar"
-          src={localStorage.getItem("socializrAvatar")}
+          src={state.user.avatar}
           alt="User avatar"
         />
       </a>
       <Link to="/create-post" className="btn btn-sm btn-success mr-2">
         Create Post
       </Link>
-      <button className="btn btn-sm btn-secondary" onClick={handleLogout}>Sign Out</button>
+      <button className="btn btn-sm btn-secondary" onClick={handleLogout}>
+        Sign Out
+      </button>
     </div>
   );
 };

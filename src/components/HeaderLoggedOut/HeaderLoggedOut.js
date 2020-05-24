@@ -17,19 +17,15 @@ const HeaderLoggedOut = () => {
         password
       });
 
-      if(response.data) {
-        dispatch({type: "login"})
-
-        localStorage.setItem("socializrToken", response.data.token);
-        localStorage.setItem("socializrUsername", response.data.username);
-        localStorage.setItem("socializrAvatar", response.data.avatar);
+      if (response.data) {
+        dispatch({ type: "login", data: response.data });
       } else {
         console.log("Incorrect username/password");
       }
     } catch (err) {
       console.log("There was a problem");
     }
-  }
+  };
 
   return (
     <form className="mb-0 pt-2 pt-md-0" onSubmit={handleSubmit}>

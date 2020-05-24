@@ -4,11 +4,13 @@ import { useHistory } from "react-router-dom";
 
 import Page from "../Page/Page";
 import DispatchContext from "../../context/DispatchContext";
+import StateContext from "../../context/StateContext";
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const dispatch = useContext(DispatchContext);
+  const state = useContext(StateContext);
   let history = useHistory();
 
   const handleSubmit = async e => {
@@ -18,7 +20,7 @@ const CreatePost = () => {
       const response = await axios.post("/create-post", {
         title,
         body,
-        token: localStorage.getItem("socializrToken")
+        token: state.user.token
       });
 
       dispatch({type: "flashMessage", value: "You successfully created a post."});
