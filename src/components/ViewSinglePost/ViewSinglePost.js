@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
+import ReactMarkdown from "react-markdown";
 
 import Page from "../Page/Page";
+import Loading from "../Loading/Loading";
 
 const ViewSinglePost = () => {
   const [loading, setLoading] = useState(true);
@@ -10,10 +12,13 @@ const ViewSinglePost = () => {
   const { id } = useParams();
 
   useEffect(() => {
+    const request = axios.CancelToken.source();
+
     async function fetchPost() {
       try {
-        const response = await axios.get(`/post/${id}`);
-        console.log(response.data);
+        const response = await axios.get(`/post/${id}`, {
+          cancelToken: request.token
+        });
         setPost(response.data);
         setLoading(false);
       } catch (err) {
@@ -22,14 +27,20 @@ const ViewSinglePost = () => {
     }
 
     fetchPost();
+
+    return () => {
+      request.cancel();
+    };
   }, [id]);
 
   const date = new Date(post.createdDate);
-  const formattedDate = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}.`;
+  const formattedDate = `${date.getDate()}.${
+    date.getMonth() + 1
+  }.${date.getFullYear()}.`;
 
   return loading ? (
     <Page title="...">
-      <div>Loading...</div>
+      <Loading />
     </Page>
   ) : (
     <Page title={post.title}>
@@ -60,7 +71,21 @@ const ViewSinglePost = () => {
         on {formattedDate}
       </p>
 
-      <div className="body-content">{post.body}</div>
+      <div className="body-content">
+        <ReactMarkdown
+          source={post.body}
+          allowedTypes={[
+            "paragraph",
+            "strong",
+            "emphasis",
+            "text",
+            "heading",
+            "list",
+            "link",
+            "listItem"
+          ]}
+        />
+      </div>
     </Page>
   );
 };

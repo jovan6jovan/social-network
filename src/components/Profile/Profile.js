@@ -7,7 +7,7 @@ import Page from "../Page/Page";
 import ProfilePosts from "../ProfilePosts/ProfilePosts";
 
 const Profile = () => {
-  const {username} = useParams();
+  const { username } = useParams();
   const state = useContext(StateContext);
   const [profileData, setProfileData] = useState({
     profileUsername: "...",
@@ -21,17 +21,27 @@ const Profile = () => {
   });
 
   useEffect(() => {
+    const request = axios.CancelToken.source();
+
     async function fetchData() {
       try {
-        const response = await axios.post(`/profile/${username}`, { token: state.user.token});
+        const response = await axios.post(
+          `/profile/${username}`,
+          { token: state.user.token },
+          { cancelToken: request.token }
+        );
         setProfileData(response.data);
       } catch (err) {
-        console.log("There was a problem.")
+        console.log("There was a problem.");
       }
     }
 
     fetchData();
-  },[state.user.token, username]);
+
+    return () => {
+      request.cancel();
+    };
+  }, [state.user.token, username]);
 
   return (
     <Page title="Your Profile">
