@@ -9,6 +9,7 @@ import About from "../components/About/About";
 import Terms from "../components/Terms/Terms";
 import CreatePost from "../components/CreatePost/CreatePost";
 import ViewSinglePost from "../components/ViewSinglePost/ViewSinglePost";
+import EditPost from "../components/EditPost/EditPost";
 
 const MainRoutes = () => {
   const { loggedIn } = useContext(StateContext);
@@ -20,6 +21,7 @@ const MainRoutes = () => {
       <Route exact path="/terms" component={Terms} />
       <Route exact path="/create-post" component={CreatePost} />
       <Route exact path="/post/:id" component={ViewSinglePost} />
+      <Route exact path="/post/:id/edit" component={EditPost} />
       <Route exact path="/profile/:username" component={Profile} />
     </Switch>
   );
